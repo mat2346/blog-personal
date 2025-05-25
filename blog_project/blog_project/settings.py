@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-qbg#b18cavuz)c^lv$5x8p01p3)5ksehalbc90bp@ozrhn##lz
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 # Application definition
 
@@ -37,15 +37,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog_app', 
+    'rest_framework',
+    'blog_app',
     'cloudinary',
     'cloudinary_storage',
+    'drf_yasg',
+    'usuarios',
 ]
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'tu_cloud_name',
     'API_KEY': 'tu_api_key',
     'API_SECRET': 'tu_api_secret',
+}
+REST_FRAMEWORK = {
+     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -85,11 +93,14 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'blog_db',
+        'USER': 'blog_db',
+        'PASSWORD': 'blog_db',
+        'HOST': 'localhost',  
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
