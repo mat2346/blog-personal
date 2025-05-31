@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'blog_app',
+
     'cloudinary',
     'cloudinary_storage',
     'drf_yasg',
     'usuarios',
+    'blog',
 ]
 
 CLOUDINARY_STORAGE = {
