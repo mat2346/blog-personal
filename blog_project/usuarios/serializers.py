@@ -5,13 +5,18 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'nombre', 'email', 'password', 'suspendido', 'roles']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ['id', 'nombre', 'email', 'password', 'suspendido', 'is_active', 'is_staff']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
     def create(self, validated_data):
-        roles = validated_data.pop('roles', [])
-        user = Usuario.objects.create_user(**validated_data)
-        user.roles.set(roles)
+        user = Usuario.objects.create_user(
+            nombre=validated_data['nombre'],
+            email=validated_data['email'],
+            password=validated_data['password'],
+            suspendido=validated_data.get('suspendido', False)
+        )
         return user
 
 class ChangePasswordSerializer(serializers.Serializer):

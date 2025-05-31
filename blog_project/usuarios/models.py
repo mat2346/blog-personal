@@ -18,27 +18,27 @@ class UsuarioManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(nombre, email, password, **extra_fields)
 
-class Permiso(models.Model):
-    nombre = models.CharField(max_length=50)
-    descripcion = models.TextField()
+# class Permiso(models.Model):
+#     nombre = models.CharField(max_length=50)
+#     descripcion = models.TextField()
 
-    def __str__(self):
-        return self.nombre
+#     def __str__(self):
+#         return self.nombre
 
-class Rol(models.Model):
-    nombre = models.CharField(max_length=50)
-    descripcion = models.TextField()
-    permisos = models.ManyToManyField(Permiso, related_name='roles')
+# class Rol(models.Model):
+#     nombre = models.CharField(max_length=50)
+#     descripcion = models.TextField()
+#     permisos = models.ManyToManyField(Permiso, related_name='roles')
 
-    def __str__(self):
-        return self.nombre
+#     def __str__(self):
+#         return self.nombre
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField(max_length=50, unique=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
     suspendido = models.BooleanField(default=False)
-    roles = models.ManyToManyField(Rol, related_name='usuarios', blank=True)
+    # roles = models.ManyToManyField(Rol, related_name='usuarios', blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
