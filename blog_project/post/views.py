@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Categoria, Post, LikePost
-from .serializers import CategoriaSerializer, PostSerializer, LikePostSerializer
+from .models import Categoria, Post, LikePost, Comentario
+from .serializers import CategoriaSerializer, PostSerializer, LikePostSerializer, ComentarioSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -61,5 +61,29 @@ class LikePostViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return LikePost.objects.filter(usuario=self.request.user)
         
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
+
+
+class ComentarioViewSet(viewsets.ModelViewSet):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        # Filtra comentarios por post si se especifica
+        queryset = Comentario.objects.all()
+        post_id = self.request.query_params.get('post_id')
+        solo_principales = self.request.query_params.get('solo_principales')
+        
+        if post_id:
+            queryset = queryset.filter(post_id=post_id)
+        
+        # Si solo_principales=true, solo devuelve comentarios que no son respuestas
+        if solo_principales and solo_principales.lower() == 'true':
+            queryset = queryset.filter(comentario_padre__isnull=True)
+            
+        return queryset.order_by('-fecha_creacion')
+    
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)

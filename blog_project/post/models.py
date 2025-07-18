@@ -42,3 +42,32 @@ class LikePost(models.Model):
     
     def __str__(self):
         return f"{self.usuario} - {self.post}"
+
+
+class Comentario(models.Model):
+    contenido = models.TextField()
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='comentarios'
+    )
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comentarios'
+    )
+    comentario_padre = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='respuestas'
+    )
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Comentario de {self.usuario} en {self.post}"
+    
+    class Meta:
+        ordering = ['-fecha_creacion']
