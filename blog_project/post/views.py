@@ -37,6 +37,9 @@ class PostViewSet(viewsets.ModelViewSet):
     )
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+            
         post = self.get_object()
         user = request.user
         
@@ -59,7 +62,9 @@ class LikePostViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return LikePost.objects.filter(usuario=self.request.user)
+        if self.request.user.is_authenticated:
+            return LikePost.objects.filter(usuario=self.request.user)
+        return LikePost.objects.none()
         
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)

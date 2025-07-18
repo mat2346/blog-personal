@@ -9,5 +9,9 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Asigna automáticamente el usuario autenticado al crear un blog
-        validated_data['usuario'] = self.context['request'].user
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            validated_data['usuario'] = request.user
+        else:
+            raise serializers.ValidationError("Authentication required")
         return super().create(validated_data)

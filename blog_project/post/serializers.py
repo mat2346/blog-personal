@@ -30,7 +30,11 @@ class LikePostSerializer(serializers.ModelSerializer):
         read_only_fields = ['usuario', 'fecha']
     
     def create(self, validated_data):
-        validated_data['usuario'] = self.context['request'].user
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            validated_data['usuario'] = request.user
+        else:
+            raise serializers.ValidationError("Authentication required")
         return super().create(validated_data)
 
 class ComentarioSerializer(serializers.ModelSerializer):
@@ -55,7 +59,11 @@ class ComentarioSerializer(serializers.ModelSerializer):
         return obj.comentario_padre is not None
     
     def create(self, validated_data):
-        validated_data['usuario'] = self.context['request'].user
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            validated_data['usuario'] = request.user
+        else:
+            raise serializers.ValidationError("Authentication required")
         return super().create(validated_data)
 
 

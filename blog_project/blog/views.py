@@ -7,8 +7,10 @@ from rest_framework.permissions import DjangoModelPermissions
 class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
-    permission_classes = [permissions.IsAuthenticated,DjangoModelPermissions()]
+    permission_classes = [permissions.IsAuthenticated, DjangoModelPermissions]
 
     def get_queryset(self):
         # Filtra los blogs para que cada usuario solo vea los suyos
-        return Blog.objects.filter(usuario=self.request.user)
+        if self.request.user.is_authenticated:
+            return Blog.objects.filter(usuario=self.request.user)
+        return Blog.objects.none()
