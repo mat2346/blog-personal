@@ -22,8 +22,8 @@ class Post(models.Model):
         Categoria,
         related_name='posts'
     )
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True, null=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.titulo
