@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-
+from blog.models import Blog 
 class UsuarioManager(BaseUserManager):
     def create_user(self, nombre, email, password=None, **extra_fields):
         if not nombre:

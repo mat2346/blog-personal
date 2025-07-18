@@ -29,3 +29,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         attrs['username'] = attrs.get('nombre')
         return super().validate(attrs)
+
+
+
