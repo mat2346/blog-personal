@@ -1,8 +1,8 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Categoria, Post, LikePost, Comentario
-from .serializers import CategoriaSerializer, PostSerializer, LikePostSerializer, ComentarioSerializer
+from .models import Categoria, Post, LikePost, Comentario, Etiqueta, PostEtiqueta
+from .serializers import CategoriaSerializer, PostSerializer, LikePostSerializer, ComentarioSerializer, EtiquetaSerializer, PostEtiquetaSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
@@ -87,3 +87,38 @@ class ComentarioViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
+
+
+class EtiquetaViewSet(viewsets.ModelViewSet):
+    queryset = Etiqueta.objects.all()
+    serializer_class = EtiquetaSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    @swagger_auto_schema(
+        operation_description="Obtener todos los posts asociados a una etiqueta",
+        responses={200: PostSerializer(many=True)}
+    )
+    @action(detail=True, methods=['get'])
+    def posts(self, request, pk=None):
+        etiqueta = self.get_object()
+        posts = Post.objects.filter(post_etiquetas__etiqueta=etiqueta)
+        serializer = PostSerializer(posts, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+class PostEtiquetaViewSet(viewsets.ModelViewSet):
+    queryset = PostEtiqueta.objects.all()
+    serializer_class = PostEtiquetaSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        queryset = PostEtiqueta.objects.all()
+        post_id = self.request.query_params.get('post_id')
+        etiqueta_id = self.request.query_params.get('etiqueta_id')
+        
+        if post_id:
+            queryset = queryset.filter(post_id=post_id)
+        if etiqueta_id:
+            queryset = queryset.filter(etiqueta_id=etiqueta_id)
+            
+        return queryset.order_by('-fecha')

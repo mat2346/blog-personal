@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Categoria, Post, LikePost, Comentario
+from .models import Categoria, Post, LikePost, Comentario, Etiqueta, PostEtiqueta
 from django.conf import settings
 
 class CategoriaSerializer(serializers.ModelSerializer):
@@ -51,3 +51,24 @@ class ComentarioSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['usuario'] = self.context['request'].user
         return super().create(validated_data)
+
+
+class EtiquetaSerializer(serializers.ModelSerializer):
+    posts_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Etiqueta
+        fields = ['id', 'nombre', 'posts_count']
+    
+    def get_posts_count(self, obj):
+        return obj.post_etiquetas.count()
+
+
+class PostEtiquetaSerializer(serializers.ModelSerializer):
+    etiqueta_nombre = serializers.CharField(source='etiqueta.nombre', read_only=True)
+    post_titulo = serializers.CharField(source='post.titulo', read_only=True)
+    
+    class Meta:
+        model = PostEtiqueta
+        fields = ['id', 'post', 'post_titulo', 'etiqueta', 'etiqueta_nombre', 'fecha']
+        read_only_fields = ['fecha']
