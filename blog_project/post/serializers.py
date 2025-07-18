@@ -9,13 +9,19 @@ class CategoriaSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
+    comentarios_count = serializers.SerializerMethodField()
     
     class Meta:
         model = Post
-        fields = ['id', 'titulo', 'contenido', 'blog', 'categoria', 'likes_count']
+        fields = ['id', 'titulo', 'contenido', 'blog', 'categoria', 'fecha_creacion', 
+                 'fecha_actualizacion', 'likes_count', 'comentarios_count']
+        read_only_fields = ['fecha_creacion', 'fecha_actualizacion']
     
     def get_likes_count(self, obj):
         return obj.likes.count()
+    
+    def get_comentarios_count(self, obj):
+        return obj.comentarios.count()
 
 class LikePostSerializer(serializers.ModelSerializer):
     class Meta:

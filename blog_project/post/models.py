@@ -22,9 +22,14 @@ class Post(models.Model):
         Categoria,
         related_name='posts'
     )
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.titulo
+    
+    class Meta:
+        ordering = ['-fecha_creacion']
   
 
 class LikePost(models.Model):
