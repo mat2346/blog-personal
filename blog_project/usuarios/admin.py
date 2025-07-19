@@ -24,19 +24,19 @@ class UsuarioAdmin(UserAdmin):
     add_form = UsuarioCreationForm
     form = UsuarioChangeForm
     model = Usuario
-    list_display = ['id', 'nombre', 'email', 'suspendido', 'is_active', 'is_staff']
+    list_display = ['id', 'email', 'nombre', 'suspendido', 'is_active', 'is_staff']  # email primero
     fieldsets = (
-        (None, {'fields': ('nombre', 'email', 'password', 'suspendido')}),
+        (None, {'fields': ('email', 'nombre', 'password', 'suspendido')}),  # email primero
         ('Permisos', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('nombre', 'email', 'password', 'suspendido', 'is_active', 'is_staff', 'is_superuser')}
+            'fields': ('email', 'nombre', 'password', 'suspendido', 'is_active', 'is_staff', 'is_superuser')}  # email primero
         ),
     )
-    search_fields = ('nombre', 'email')
-    ordering = ('nombre',)
+    search_fields = ('email', 'nombre')  # email primero
+    ordering = ('email',)  # ordenar por email
     filter_horizontal = ('groups', 'user_permissions')
 
 admin.site.register(Usuario, UsuarioAdmin)
