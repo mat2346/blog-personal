@@ -31,3 +31,4 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email  # Cambiado de self.nombre a self.email
+    

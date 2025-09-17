@@ -1,0 +1,45 @@
+<svg width="450" height="300" viewBox="0 0 450 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="450" height="300" fill="url(#gradient1)"/>
+  
+  <!-- Database Icon -->
+  <ellipse cx="225" cy="120" rx="80" ry="20" fill="#2c3e50" opacity="0.8"/>
+  <rect x="145" y="120" width="160" height="60" fill="#34495e"/>
+  <ellipse cx="225" cy="120" rx="80" ry="20" fill="#3498db"/>
+  
+  <ellipse cx="225" cy="140" rx="80" ry="20" fill="#2c3e50" opacity="0.6"/>
+  <ellipse cx="225" cy="140" rx="80" ry="20" fill="#3498db" opacity="0.8"/>
+  
+  <ellipse cx="225" cy="160" rx="80" ry="20" fill="#2c3e50" opacity="0.4"/>
+  <ellipse cx="225" cy="160" rx="80" ry="20" fill="#3498db" opacity="0.6"/>
+  
+  <ellipse cx="225" cy="180" rx="80" ry="20" fill="#2c3e50" opacity="0.2"/>
+  <ellipse cx="225" cy="180" rx="80" ry="20" fill="#3498db" opacity="0.4"/>
+  
+  <!-- SQL/NoSQL Labels -->
+  <text x="100" y="250" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#e74c3c">SQL</text>
+  <text x="300" y="250" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#27ae60">NoSQL</text>
+  
+  <!-- Connecting Lines -->
+  <line x1="130" y1="235" x2="180" y2="190" stroke="#e74c3c" stroke-width="3" opacity="0.7"/>
+  <line x1="320" y1="235" x2="270" y2="190" stroke="#27ae60" stroke-width="3" opacity="0.7"/>
+  
+  <!-- Data Flow Particles -->
+  <circle cx="160" cy="210" r="3" fill="#f39c12" opacity="0.8">
+    <animate attributeName="cy" values="210;190;210" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="290" cy="210" r="3" fill="#9b59b6" opacity="0.8">
+    <animate attributeName="cy" values="210;190;210" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Title -->
+  <text x="225" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">Database Hub</text>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
