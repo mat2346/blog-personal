@@ -1,15 +1,24 @@
 name: blog-project
-service:
-  name: blog-api
-  type: web
-  ports:
-    - port: 8000
-      http: "/"
-  env:
-    - key: PYTHON_VERSION
-      value: "3.11.0"
-  build:
-    builder: dockerfile
-  routes:
-    - path: /
-      port: 8000
+
+services:
+  - name: blog-api
+    instance_types:
+      - name: free-small
+    envs:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".koyeb.app"
+      - key: DATABASE_URL
+        value: "postgresql://postgres.bvzorigudmxpqyheruuq:5ZtytJ.DvxDuD9x@aws-1-us-east-2.pooler.supabase.com:5432/postgres"
+    ports:
+      - port: 8000
+    build:
+      builder: pack
+      buildpacks:
+        - name: heroku/python
+    routes:
+      - path: /
+        port: 8000

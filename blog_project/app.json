@@ -1,0 +1,29 @@
+{
+    "name": "blog-project",
+    "description": "Django Blog API",
+    "keywords": [
+        "python",
+        "django",
+        "api"
+    ],
+    "repository": "https://github.com/mat2346/blog-personal",
+    "env": {
+        "PYTHON_VERSION": {
+            "description": "Python version to use",
+            "value": "3.11.0"
+        },
+        "DEBUG": {
+            "description": "Debug mode",
+            "value": "False"
+        },
+        "ALLOWED_HOSTS": {
+            "description": "Allowed hosts",
+            "value": ".koyeb.app"
+        }
+    },
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ]
+}
