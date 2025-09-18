@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'blog_app',
 
+    'corsheaders',
     'cloudinary',
     'cloudinary_storage',
     'drf_yasg',
@@ -65,6 +66,7 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -145,6 +147,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+ 
+# CORS: Permitir cualquier origen
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Configuración para drf-yasg (Swagger)
 SWAGGER_SETTINGS = {
