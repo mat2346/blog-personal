@@ -1,0 +1,15 @@
+name: blog-project
+service:
+  name: blog-api
+  type: web
+  ports:
+    - port: 8000
+      http: "/"
+  env:
+    - key: PYTHON_VERSION
+      value: "3.11.0"
+  build:
+    builder: dockerfile
+  routes:
+    - path: /
+      port: 8000
