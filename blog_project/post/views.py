@@ -5,16 +5,17 @@ from .models import Categoria, Post, LikePost, Comentario, Etiqueta, PostEtiquet
 from .serializers import CategoriaSerializer, PostSerializer, LikePostSerializer, ComentarioSerializer, EtiquetaSerializer, PostEtiquetaSerializer
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from blog_project.permissions import SuperuserOrAuthenticated
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperuserOrAuthenticated]
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperuserOrAuthenticated]
     
     def get_queryset(self):
         queryset = Post.objects.all()
@@ -59,7 +60,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class LikePostViewSet(viewsets.ModelViewSet):
     queryset = LikePost.objects.all()
     serializer_class = LikePostSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperuserOrAuthenticated]
     
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -73,7 +74,7 @@ class LikePostViewSet(viewsets.ModelViewSet):
 class ComentarioViewSet(viewsets.ModelViewSet):
     queryset = Comentario.objects.all()
     serializer_class = ComentarioSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperuserOrAuthenticated]
     
     def get_queryset(self):
         # Filtra comentarios por post si se especifica
@@ -97,7 +98,7 @@ class ComentarioViewSet(viewsets.ModelViewSet):
 class EtiquetaViewSet(viewsets.ModelViewSet):
     queryset = Etiqueta.objects.all()
     serializer_class = EtiquetaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperuserOrAuthenticated]
     
     @swagger_auto_schema(
         operation_description="Obtener todos los posts asociados a una etiqueta",
@@ -114,7 +115,7 @@ class EtiquetaViewSet(viewsets.ModelViewSet):
 class PostEtiquetaViewSet(viewsets.ModelViewSet):
     queryset = PostEtiqueta.objects.all()
     serializer_class = PostEtiquetaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [SuperuserOrAuthenticated]
     
     def get_queryset(self):
         queryset = PostEtiqueta.objects.all()

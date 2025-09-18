@@ -1,5 +1,18 @@
 from rest_framework import permissions
 
+class SuperuserOrAuthenticated(permissions.BasePermission):
+    """
+    Permite acceso a superusuarios (superadmin) sin requerir autenticación,
+    pero exige autenticación para todos los demás usuarios.
+    """
+    def has_permission(self, request, view):
+        # Si el usuario es superusuario (is_superuser), permitir acceso
+        if hasattr(request, 'user') and request.user and request.user.is_superuser:
+            return True
+            
+        # Para usuarios no superusuarios, exigir autenticación
+        return request.user and request.user.is_authenticated
+
 class NoEstaSuspendido(permissions.BasePermission):
     """
     Permite acceso solo a usuarios que no están suspendidos.

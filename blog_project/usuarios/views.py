@@ -25,16 +25,19 @@ class UsuarioViewSet(viewsets.ModelViewSet):
         - create: Cualquiera puede registrarse
         - update/partial_update: Usuario propio o administradores
         - destroy: Solo administradores
+        - superusuarios tienen acceso completo sin autenticación
         """
+        from blog_project.permissions import SuperuserOrAuthenticated
+        
         permission_map = {
-            'list': [permissions.IsAuthenticated(), DjangoModelPermissions()],
-            'create': [permissions.AllowAny()],
-            'retrieve': [permissions.IsAuthenticated()],
-            'update': [permissions.IsAuthenticated(), DjangoModelPermissions()],
-            'partial_update': [permissions.IsAuthenticated(), DjangoModelPermissions()],
-            'destroy': [permissions.IsAuthenticated(), DjangoModelPermissions()]
+            'list': [SuperuserOrAuthenticated(), DjangoModelPermissions()],
+            'create': [permissions.AllowAny()],  # Mantener AllowAny para registro
+            'retrieve': [SuperuserOrAuthenticated()],
+            'update': [SuperuserOrAuthenticated(), DjangoModelPermissions()],
+            'partial_update': [SuperuserOrAuthenticated(), DjangoModelPermissions()],
+            'destroy': [SuperuserOrAuthenticated(), DjangoModelPermissions()]
         }
-        return permission_map.get(self.action, [permissions.IsAuthenticated()])
+        return permission_map.get(self.action, [SuperuserOrAuthenticated()])
     
     def get_queryset(self):
         """
@@ -52,9 +55,13 @@ class ChangePasswordView(generics.UpdateAPIView):
     """
     API endpoint para cambiar la contraseña.
     Requiere estar autenticado y proporcionar la contraseña actual.
+    Superusuarios tienen acceso sin autenticación.
     """
     serializer_class = ChangePasswordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_permissions(self):
+        from blog_project.permissions import SuperuserOrAuthenticated
+        return [SuperuserOrAuthenticated()]
 
     def update(self, request, *args, **kwargs):
         user = request.user
@@ -77,8 +84,11 @@ class LogoutView(APIView):
     """
     API endpoint para cerrar sesión.
     Añade el token de refresco a la lista negra para invalidarlo.
+    Superusuarios tienen acceso sin autenticación.
     """
-    permission_classes = [permissions.IsAuthenticated]
+    def get_permissions(self):
+        from blog_project.permissions import SuperuserOrAuthenticated
+        return [SuperuserOrAuthenticated()]
 
     def post(self, request):
         try:
